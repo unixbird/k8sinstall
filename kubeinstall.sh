@@ -117,12 +117,13 @@ curl https://raw.githubusercontent.com/projectcalico/calico/v3.30.0/manifests/cu
 
 curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-# Wait 1m for the node to become ready
-sleep 1m
-
 # deploy metal-lb
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.2/config/manifests/metallb-native.yaml
 
+# wait for 1m to allow everything to come up
+sleep 1m
+
+#install the metalconfig
 kubectl apply -f metalconfig.yml
 
 # deploy ingress-nginx
