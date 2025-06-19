@@ -124,7 +124,7 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.2/confi
 sleep 1m
 
 #install the metalconfig
-kubectl apply -f metalconfig.yml
+sed "s/MASTER_PUBLIC_IP/$MASTER_PUBLIC_IP/g" metalconfig.yml | kubectl apply -f -
 
 # deploy ingress-nginx
 helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx --namespace ingress-nginx --create-namespace
