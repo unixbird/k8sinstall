@@ -107,11 +107,14 @@ kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 
 # Install Calico operator for CNI
 
-kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.0/manifests/operator-crds.yaml
+kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/operator-crds.yaml
 
-kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.0/manifests/tigera-operator.yaml
+kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/tigera-operator.yaml
 
-curl https://raw.githubusercontent.com/projectcalico/calico/v3.30.0/manifests/custom-resources.yaml -O && kubectl create -f custom-resources.yaml
+curl https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/custom-resources.yaml -O && kubectl create -f custom-resources.yaml
+
+# install calicoctl for later
+curl -L https://github.com/projectcalico/calico/releases/download/v3.30.2/calicoctl-linux-amd64 -o calicoctl && chmod +x calicoctl && mv calicoctl /usr/bin/ 
 
 # install helm
 
@@ -120,7 +123,7 @@ curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 # deploy metal-lb
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.2/config/manifests/metallb-native.yaml
 
-# wait for 1m to allow everything to come up
+# wait to allow everything to become ready
 sleep 1m
 
 #install the metalconfig
