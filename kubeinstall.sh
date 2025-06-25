@@ -12,8 +12,8 @@ read -e -p "what version of CRI-O do you want to install (v1.30)?: " CRIO_VERSIO
 sudo swapoff -a
 sudo sed -i '/ swap / s/^/#/' /etc/fstab
 
-sudo apt-get update -y
-sudo apt install bash-completion
+sudo apt-get update
+sudo apt install -y bash-completion software-properties-common apt-transport-https ca-certificates curl gpg
 
 # Create the .conf file to load the modules at bootup
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
@@ -34,12 +34,7 @@ EOF
 # Apply sysctl params without reboot
 sudo sysctl --system
 
-sudo apt-get update -y
-sudo apt-get install -y apt-transport-https ca-certificates curl gpg
-
 # Install CRI-O Runtime
-sudo apt-get update -y
-sudo apt-get install -y software-properties-common curl apt-transport-https ca-certificates
 
 curl -fsSL https://pkgs.k8s.io/addons:/cri-o:/stable:/$CRIO_VERSION/deb/Release.key |
     gpg --dearmor -o /etc/apt/keyrings/cri-o-apt-keyring.gpg
@@ -63,7 +58,7 @@ curl -fsSL https://pkgs.k8s.io/core:/stable:/$KUBERNETES_VERSION/deb/Release.key
 echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/$KUBERNETES_VERSION/deb/ /" |
     tee /etc/apt/sources.list.d/kubernetes.list
 
-sudo apt-get update -y
+sudo apt-get update
 set -x #echo on
 sudo apt-cache madison kubelet
 read -e -p "What specific patch version do you want?: " KUBERNETES_INSTALL_VERSION
@@ -71,8 +66,6 @@ sudo apt-get install -y kubelet="$KUBERNETES_INSTALL_VERSION" kubectl="$KUBERNET
 
 # Prevent automatic updates for kubelet, kubeadm, and kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
-
-sudo apt-get update -y
 
 read -e -p "what is the node ip?: " local_ip
 
@@ -86,7 +79,7 @@ set -euxo pipefail
 # If you need public access to API server using the servers Public IP adress, change PUBLIC_IP_ACCESS to true.
 
 read -e -p "what do you want the nodename to be? NO UPPERCASE: " NODENAME
-read -e -p "what do you want the pod cidr to be? (192.168.0.0/16): " POD_CIDR
+read -e -p "what do you want the pod cidr to be? for example (192.168.0.0/16): " POD_CIDR
 
 # Pull required images
 
