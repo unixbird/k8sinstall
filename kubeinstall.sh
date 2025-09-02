@@ -76,8 +76,7 @@ EOF
 
 set -euxo pipefail
 
-# If you need public access to API server using the servers Public IP adress, change PUBLIC_IP_ACCESS to true.
-
+# Time to ask about the Nodename and what CIDR you want for your pods
 read -e -p "what do you want the nodename to be? NO UPPERCASE: " NODENAME
 read -e -p "what do you want the pod cidr to be? for example (192.168.0.0/16): " POD_CIDR
 
@@ -95,19 +94,19 @@ mkdir -p "$HOME"/.kube
 sudo cp -i /etc/kubernetes/admin.conf "$HOME"/.kube/config
 sudo chown "$(id -u)":"$(id -g)" "$HOME"/.kube/config
 
-# Taint the node to accept worker jobs
+# Taint the node to accept worker jobs. You can always untaint this if you want this to only act as a control plane node.
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
 
 # Install Calico operator for CNI
 
-kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/operator-crds.yaml
+kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.3/manifests/operator-crds.yaml
 
-kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/tigera-operator.yaml
+kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.3/manifests/tigera-operator.yaml
 
-curl https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/custom-resources.yaml -O && kubectl create -f custom-resources.yaml
+curl https://raw.githubusercontent.com/projectcalico/calico/v3.30.3/manifests/custom-resources.yaml -O && kubectl create -f custom-resources.yaml
 
 # install calicoctl for later
-curl -L https://github.com/projectcalico/calico/releases/download/v3.30.2/calicoctl-linux-amd64 -o calicoctl && chmod +x calicoctl && mv calicoctl /usr/bin/ 
+curl -L https://github.com/projectcalico/calico/releases/download/v3.30.3/calicoctl-linux-amd64 -o calicoctl && chmod +x calicoctl && mv calicoctl /usr/bin/ 
 
 # install helm
 
