@@ -103,10 +103,10 @@ kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.c
 
 kubectl apply --server-side --force-conflicts -f https://raw.githubusercontent.com/projectcalico/calico/v3.31.2/manifests/tigera-operator.yaml
 
-curl https://raw.githubusercontent.com/projectcalico/calico/v3.30.3/manifests/custom-resources.yaml -O && kubectl create -f custom-resources.yaml
+curl https://raw.githubusercontent.com/projectcalico/calico/v3.31.2/manifests/custom-resources.yaml -O && kubectl create -f custom-resources.yaml
 
 # install calicoctl for later
-curl -L https://github.com/projectcalico/calico/releases/download/v3.30.3/calicoctl-linux-amd64 -o calicoctl && chmod +x calicoctl && mv calicoctl /usr/bin/ 
+curl -L https://github.com/projectcalico/calico/releases/download/v3.31.2/calicoctl-linux-amd64 -o calicoctl && chmod +x calicoctl && mv calicoctl /usr/bin/ 
 
 # install helm
 
