@@ -81,7 +81,7 @@ set -euxo pipefail
 # Time to ask about the Nodename and what CIDR you want for your pods
 read -e -p "what do you want the nodename to be? NO UPPERCASE: " NODENAME
 read -e -p "what do you want the pod cidr to be? for example (192.168.0.0/16): " POD_CIDR
-POD_CIDR=${POD_CIDR=-192.168.0.0/16}
+POD_CIDR=${POD_CIDR:-192.168.0.0/16}
 
 # Pull required images
 
