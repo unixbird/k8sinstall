@@ -5,8 +5,10 @@
 set -euxo pipefail
 
 # Kubernetes Variable Declaration
-read -e -p "what kubernetes version do you want to install (v1.30)?: " KUBERNETES_VERSION
-read -e -p "what version of CRI-O do you want to install (v1.30)?: " CRIO_VERSION
+read -e -p "what kubernetes version do you want to install (v1.35)?: " KUBERNETES_VERSION
+KUBERNETES_VERSION=${KUBERNETES_VERSION:-v1.35}
+read -e -p "what version of CRI-O do you want to install (v1.35)?: " CRIO_VERSION
+CRIO_VERSION=${CRIO_VERSION:-v1.35}
 
 # Disable swap and persist after reboot if swap exists
 sudo swapoff -a
@@ -61,8 +63,8 @@ echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.
 sudo apt-get update
 set -x #echo on
 sudo apt-cache madison kubelet
-read -e -p "What specific patch version do you want?: " KUBERNETES_INSTALL_VERSION
-sudo apt-get install -y kubelet="$KUBERNETES_INSTALL_VERSION" kubectl="$KUBERNETES_INSTALL_VERSION" kubeadm="$KUBERNETES_INSTALL_VERSION"
+read -e -p "What specific patch version do you want?: " KUBERNETES_PATCH_VERSION
+sudo apt-get install -y kubelet="$KUBERNETES_PATCH_VERSION" kubectl="$KUBERNETES_PATCH_VERSION" kubeadm="$KUBERNETES_PATCH_VERSION"
 
 # Prevent automatic updates for kubelet, kubeadm, and kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
@@ -79,6 +81,7 @@ set -euxo pipefail
 # Time to ask about the Nodename and what CIDR you want for your pods
 read -e -p "what do you want the nodename to be? NO UPPERCASE: " NODENAME
 read -e -p "what do you want the pod cidr to be? for example (192.168.0.0/16): " POD_CIDR
+POD_CIDR=${POD_CIDR=-192.168.0.0/16}
 
 # Pull required images
 
